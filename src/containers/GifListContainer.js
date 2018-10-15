@@ -6,11 +6,15 @@ class GifListContainer extends Component {
 
   state = {
     gifs: [],
-    searchTerm: 'fish'
+    // searchTerm: ''
   }
 
-  handleFetch = () => {
-    fetch(`http://api.giphy.com/v1/gifs/search?q=${this.state.searchTerm}&api_key=dc6zaTOxFJmzC&rating=g&limit=3`)
+  // handleChange = (value) => {
+  //   this.setState({searchTerm: value})
+  // }
+
+  handleFetch = (term='fish') => {
+    fetch(`http://api.giphy.com/v1/gifs/search?q=${term}&api_key=dc6zaTOxFJmzC&rating=g&limit=3`)
       .then(res => res.json())
       .then(data => this.setState({gifs: data.data}))
   }
@@ -19,23 +23,11 @@ class GifListContainer extends Component {
     this.handleFetch()
   }
 
-  handleChange = (e) => {
-    this.setState({searchTerm: e.target.value})
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.handleFetch()
-  }
-
   render() {
     console.log(this.state)
     return (
       <div>
-        <GifSearch
-          handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit}
-        />
+        <GifSearch handleSubmit={this.handleFetch} handleChange={this.handleChange}/>
         <GifList gifs={this.state.gifs}/>
       </div>
     );
